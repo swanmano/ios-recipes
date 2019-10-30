@@ -11,7 +11,8 @@ import UIKit
 class MainViewController: UIViewController {
     
     // MARK: Properties
-    
+    let networkClient = RecipesNetworkClient()
+    var allRecipes: [Recipe] = []
     
     // MARK: Outlets
     @IBOutlet weak var recipeTextField: UITextField!
