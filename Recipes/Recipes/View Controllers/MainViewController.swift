@@ -14,6 +14,7 @@ class MainViewController: UIViewController {
     let networkClient = RecipesNetworkClient()
     var allRecipes: [Recipe] = []
     var recipesTableViewController: RecipesTableViewController?
+    var filteredRecipes: [Recipe] = []
     
     // MARK: Outlets
     @IBOutlet weak var recipeTextField: UITextField!
@@ -38,17 +39,26 @@ class MainViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func searchRecipes(_ sender: UITextField) {
+        recipeTextField.resignFirstResponder()
+        filterRecipes()
     }
     
-
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "RecipeTableViewSegue" {
+            recipesTableViewController = segue.destination as? RecipesTableViewController
+            
+        }
     }
-    */
+    
+    // MARK: Methods
+    func filterRecipes() {
+        if let recipeSearch = recipeTextField.text,
+            recipeTextField.text != "" {
+            
+        } else { filteredRecipes = allRecipes }
+            
+    }
 
 }
