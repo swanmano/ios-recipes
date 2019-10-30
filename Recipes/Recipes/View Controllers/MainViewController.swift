@@ -56,8 +56,11 @@ class MainViewController: UIViewController {
     func filterRecipes() {
         if let recipeSearch = recipeTextField.text,
             recipeTextField.text != "" {
+//            recipeTextField.text.
+        } else {
+            filteredRecipes = allRecipes
             
-        } else { filteredRecipes = allRecipes }
+        }
             
     }
 
