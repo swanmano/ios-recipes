@@ -13,6 +13,7 @@ class MainViewController: UIViewController {
     // MARK: Properties
     let networkClient = RecipesNetworkClient()
     var allRecipes: [Recipe] = []
+    var recipesTableViewController: RecipesTableViewController?
     
     // MARK: Outlets
     @IBOutlet weak var recipeTextField: UITextField!
@@ -21,7 +22,18 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        networkClient.fetchRecipes { recipes, error in
+            if let error = error {
+                    print("Error loading recipes: \(error)")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                if let recipes = recipes {
+                    self.allRecipes = recipes
+                }
+            }
+        }
     }
     
     // MARK: Actions
