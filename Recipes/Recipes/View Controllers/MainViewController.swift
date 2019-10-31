@@ -19,13 +19,13 @@ class MainViewController: UIViewController {
     }
     var recipesTableViewController: RecipesTableViewController? {
         didSet {
-            self.recipesTableViewController?.recipes = filteredRecipes
+            self.recipesTableViewController!.recipes = filteredRecipes
         }
     }
     private var recipeController = RecipeController()
     var filteredRecipes: [Recipe] = [] {
         didSet {
-            recipesTableViewController?.recipes = self.filteredRecipes
+            recipesTableViewController!.recipes = self.filteredRecipes
         }
     }
     
@@ -49,7 +49,6 @@ class MainViewController: UIViewController {
                 }
             }
         }
-        recipesTableViewController?.tableView.reloadData()
     }
     
     // MARK: Actions
@@ -63,18 +62,14 @@ class MainViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "RecipeTableViewSegue" {
             recipesTableViewController = segue.destination as? RecipesTableViewController
-            
         }
     }
     
     // MARK: Methods
     func filterRecipes() {
-        if let recipeSearch = recipeTextField.text {
+        guard let recipeSearch = recipeTextField.text,
+            recipeTextField.text != "" else { return filteredRecipes = allRecipes }
             filteredRecipes = recipeController.filterRecipes(with: recipeSearch, inArray: allRecipes)
-        } else {
-            filteredRecipes = allRecipes
-        }
-            
     }
 
 }
