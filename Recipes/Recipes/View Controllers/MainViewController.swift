@@ -56,7 +56,7 @@ class MainViewController: UIViewController {
     func filterRecipes() {
         if let recipeSearch = recipeTextField.text,
             recipeTextField.text != "" {
-//            recipeTextField.text.
+//            NOTE:  I believe that here we do a call to a filter function, which uses .filter and a closure to find which recipes contain the search string.  The Swift function for that is .contains   The filter functions should then return the filtered array of Recipe here.
         } else {
             filteredRecipes = allRecipes
             
