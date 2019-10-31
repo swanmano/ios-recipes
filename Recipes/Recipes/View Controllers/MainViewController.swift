@@ -12,6 +12,11 @@ class MainViewController: UIViewController {
     
     // MARK: Properties
     let networkClient = RecipesNetworkClient()
+    
+    // The recipeController contains the code to filter the array based on the search
+    private var recipeController = RecipeController()
+    
+    // allRecipes is initially set by the saved file brought in by the network client
     var allRecipes: [Recipe] = [] {
         didSet {
             filterRecipes()
@@ -22,7 +27,8 @@ class MainViewController: UIViewController {
             self.recipesTableViewController!.recipes = filteredRecipes
         }
     }
-    private var recipeController = RecipeController()
+    
+    // filteredRecipes is the array returned after the user enters their search text
     var filteredRecipes: [Recipe] = [] {
         didSet {
             recipesTableViewController!.recipes = self.filteredRecipes
@@ -36,13 +42,13 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         networkClient.fetchRecipes { recipes, error in
             if let error = error {
                     print("Error loading recipes: \(error)")
                 return
             }
             
+            // if recipes exist, they are set to the allRecipes variable above
             DispatchQueue.main.async {
                 if let recipes = recipes {
                     self.allRecipes = recipes
