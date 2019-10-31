@@ -12,9 +12,22 @@ class MainViewController: UIViewController {
     
     // MARK: Properties
     let networkClient = RecipesNetworkClient()
-    var allRecipes: [Recipe] = []
-    var recipesTableViewController: RecipesTableViewController?
-    var filteredRecipes: [Recipe] = []
+    var allRecipes: [Recipe] = [] {
+        didSet {
+            filterRecipes()
+        }
+    }
+    var recipesTableViewController: RecipesTableViewController? {
+        didSet {
+            self.recipesTableViewController?.recipes = filteredRecipes
+        }
+    }
+    private var recipeController = RecipeController()
+    var filteredRecipes: [Recipe] = [] {
+        didSet {
+            recipesTableViewController?.recipes = self.filteredRecipes
+        }
+    }
     
     // MARK: Outlets
     @IBOutlet weak var recipeTextField: UITextField!
@@ -23,6 +36,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
         networkClient.fetchRecipes { recipes, error in
             if let error = error {
                     print("Error loading recipes: \(error)")
@@ -35,6 +49,7 @@ class MainViewController: UIViewController {
                 }
             }
         }
+        recipesTableViewController?.tableView.reloadData()
     }
     
     // MARK: Actions
@@ -54,12 +69,10 @@ class MainViewController: UIViewController {
     
     // MARK: Methods
     func filterRecipes() {
-        if let recipeSearch = recipeTextField.text,
-            recipeTextField.text != "" {
-//            NOTE:  I believe that here we do a call to a filter function, which uses .filter and a closure to find which recipes contain the search string.  The Swift function for that is .contains   The filter functions should then return the filtered array of Recipe here.
+        if let recipeSearch = recipeTextField.text {
+            filteredRecipes = recipeController.filterRecipes(with: recipeSearch, inArray: allRecipes)
         } else {
             filteredRecipes = allRecipes
-            
         }
             
     }
